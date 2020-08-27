@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+
+<link href="/css/reset.css" th:href="@{/css/reset.css}" rel="stylesheet" />
+<link href="/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
+<title>商品詳細 | ALTAIR</title>
+</head>
+<body>
+
+<header th:insert="fragments/page_header::pageHeader"></header>
+
+<main>
+	<div class="container">
+		<table class="top">
+			<caption><label th:text="${products.productName}"></label>（<label th:text="${products.productNameKana}"></label>）</caption>
+			<tr>
+				<th>画像</th><th>価格</th><th>発売元</th><th>発売年月日</th>
+			</tr>
+			<tr>
+				<td class="imageDetail">
+					<img class="itemImageDetail" th:src="${products.imageFullPath}" alt="" />
+				</td>
+				<td class="number"><span th:text="${products.price}"></span>円</td>
+				<td th:text="${products.releaseCompany}"></td>
+				<td th:text="${products.releaseDate}"></td>
+			</tr>
+		</table>
+		<form action="" method="get">
+			<label id="description">商品説明</label>
+			<textarea cols="75" rows="5" readonly th:text="${products.productDescription}">
+			</textarea>
+			
+			<hr />
+			
+			<div class="buttonArea">
+				<label>購入個数</label>
+				<input name="productCount" id="productCount" type="number" class="count number" value="0"/>
+				<input type="hidden" name="productId" id="productId" th:value="${products.id}"/>
+				<button class="cartButton" type="submit">カートに追加</button>
+			</div>
+		</form>
+	</div>
+
+</main>
+<script>
+$(() => {
+	$('.cartButton').on('click', () => {
+		let productCount = $('#productCount').val();
+		
+		if (productCount == 0) {
+			alert("個数が0です。");
+			return;
+		}
+		
+		$('form').attr('action', '/altair/cart/add');
+		$('form').submit();
+	});
+});
+</script>
+</body>
+</html>
